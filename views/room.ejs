@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Typing Race</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script>
+		const roomName = "<%= roomName %>"
+	</script>
+  	<script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
+  	<script defer src="script.js"></script>
+</head>
+<body>
+	<div class="board">
+		<br>
+		<div class="track-area" id="track-area">
+		</div>
+		<br>
+		<div class="text-area" id="text-area"></div>
+		<div class="keyboard-area">
+			<input type="text" name="keyboard-input" id="keyboard-input" class="keyboard-input" oninput="characterPosition()">
+			<div class="keyboard-input" id="game-over">Game over!</div>
+		</div>
+	</div>
+</body>
+</html>
