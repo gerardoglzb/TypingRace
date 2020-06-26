@@ -4,7 +4,6 @@
   "description": "Multiplayer typing game.",
   "main": "app.js",
   "scripts": {
-    "devStart": "nodemon server.js",
     "start": "node server.js"
   },
   "author": "Gerardo González Becerril",
