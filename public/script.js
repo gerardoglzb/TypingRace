@@ -32,13 +32,14 @@ function initializeHorse(n) {
 	document.getElementById('track-area').appendChild(track);
 	let car = document.createElement('div');
 	car.className = 'car';
-	car.id = `car0`;
+	car.id = `car${n}`;
 	car.style.backgroundImage = `url("Images/horse${n}.png")`;
 	track.appendChild(car);
 	let line = document.createElement('div');
 	line.className = 'line';
 	track.appendChild(line);
 	playerNumber = n;
+	wordsDone[playerNumber] = 0;
 }
 
 // CHECK DIFFERENCE BETWEEN CURRENT HORSES AND SUPPOSED HORSES
@@ -55,7 +56,6 @@ function createHorse(n) {
 		let car = document.createElement('div');
 		car.className = 'car';
 		car.id = `car${horses}`;
-		console.log(`car${horses}`);
 		car.style.backgroundImage = `url("Images/horse${horses}.png")`;
 		track.appendChild(car);
 		let line = document.createElement('div');
@@ -64,18 +64,16 @@ function createHorse(n) {
 	}
 }
 
-wordsDone.player = 0;
 var step = 70 / words.length;
 function makeHorseRun() {
-	let playerCounter = 0;
+	let playerCounter = 1;
 	for (let key in wordsDone) {
 		if (wordsDone.hasOwnProperty(key)) {
-			console.log("plCount now " + playerCounter);
-			document.getElementById(`car${playerCounter}`).style.marginLeft = `${wordsDone[key] * step}%`;
+			document.getElementById(`car${key}`).style.marginLeft = `${wordsDone[key] * step}%`;
 		}
 		playerCounter++;
 	}
-	if (wordsDone.player * step >= 70) {
+	if (wordsDone[playerNumber] * step >= 70) {
 		clearInterval(intervalID);
 	}
 }
@@ -86,7 +84,7 @@ function gameOver() {
 	keyboard_input.style.display = "none";
 	document.getElementById(`char-${text.length-1}`).style.color = "green";
 	document.getElementById("game-over").style.display = "inline-block";
-	console.log("you're #" + place);
+	document.getElementById("game-over").innerHTML = "Game over! You're #" + place;
 	socket.emit('game-over', roomName);
 }
 
@@ -98,9 +96,8 @@ function underlineWord(w, widx) {
 
 	var name = "Guest";
 
-	console.log("sockets on");
 	socket.on('room-created', room => {
-		console.log("room created");
+		// room created
 	})
 
 	socket.on('user-has-won', () => {
@@ -108,11 +105,7 @@ function underlineWord(w, widx) {
 	})
 
 	socket.on('room-deleted', room => {
-		console.log("deleteing");
-	})
-
-	socket.on('history', message => {
-		console.log(message);
+		// room deleted
 	})
 
 	socket.on('user-connected', data => {
@@ -124,12 +117,11 @@ function underlineWord(w, widx) {
 	})
 
 	socket.on('user-disconnected', name => {
-		console.log("bye user");
+		// user disconnected
 	})
 
 socket.on('other-player-moved', data => {
-	let userID = data.userID;
-	wordsDone[userID] = data.words;
+	wordsDone[data.playerNumber] = data.words;
 })
 
 word = words.shift();
@@ -180,7 +172,7 @@ function characterPosition() {
 		if (word == user_word) {
 			writtenWords += wordIndex+1;
 			word = words.shift();
-			wordsDone.player = wordsDone.player + 1;
+			wordsDone[playerNumber] = wordsDone[playerNumber] + 1;
 			keyboard_input.value = '';
 			if (!word) {
 				gameOver();
@@ -194,7 +186,7 @@ function characterPosition() {
 				word = word.substring(0, word.length - 1);
 			}
 		}
-		socket.emit('key-pressed', roomName, wordsDone.player);
+		socket.emit('key-pressed', roomName, wordsDone[playerNumber], playerNumber);
 		return;
 	}
 	if (word && keyPressed == word[wordIndex] && isCorrect) {
@@ -204,7 +196,7 @@ function characterPosition() {
 		isCorrect = false;
 	}
 	prev_input_length = wordIndex;
-	socket.emit('key-pressed', roomName, wordsDone.player);
+	socket.emit('key-pressed', roomName, wordsDone[playerNumber], playerNumber);
 }
 
 window.onload = function() {

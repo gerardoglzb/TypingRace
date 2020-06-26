@@ -20,7 +20,6 @@ app.post('/room', (req, res) => {
 	for (var r in rooms) {
 		if (rooms.hasOwnProperty(r)) {
 			let roomCount = rooms[r].count;
-			console.log("roomcount: " + roomCount);
 			if (roomCount < 5) {
 				return res.redirect(r);
 			}
@@ -61,18 +60,15 @@ io.on('connection', socket => {
 			delete rooms[room].users[socket.id]
 			connections--;
 			rooms[room].count -= 1;
-			console.log(rooms[room].count);
 			if (rooms[room].count == 0) {
 				//connections = 0;
-				console.log("deleting");
 				io.emit('room-deleted', room);
-				console.log
 				delete rooms[room];
 			}
 		})
 	})
-  socket.on('key-pressed', (room, words) => {
-    socket.to(room).broadcast.emit('other-player-moved', {words: words, userID: socket.id})
+  socket.on('key-pressed', (room, words, num) => {
+    socket.to(room).broadcast.emit('other-player-moved', {words: words, playerNumber: num})
   })
 })
 
