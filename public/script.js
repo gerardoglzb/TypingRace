@@ -1,4 +1,5 @@
-const socket = io('http://localhost:3000');
+const PORT = process.env.PORT || 5000;
+const socket = io(`http://localhost:${PORT}`);
 var text = "A A A A A A A A";
 var words = text.split(" ");
 var keydownKey = " ";
