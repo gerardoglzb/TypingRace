@@ -10,36 +10,49 @@ app.use(express.urlencoded({ extended: true }))
 
 const rooms = { }
 var connections = 0;
+const capacity = 5;
 
 app.get('/', (req, res) => {
 	res.render('index', { rooms: rooms })
 })
 
 app.post('/room', (req, res) => {
-	let capacity = 5;
 	for (var r in rooms) {
 		if (rooms.hasOwnProperty(r)) {
 			let roomCount = rooms[r].count;
-			if (roomCount < 5) {
+			if (roomCount < capacity && !rooms[r].started) {
 				return res.redirect(r);
 			}
 		}
 	}
 	// Find a better way to do this.
 	let code = Math.floor(Math.random() * 10000);
-	rooms[code] = { users: {}, count : 0 }
+	rooms[code] = { users: {}, count : 0, started : false, timer : 10, gameIntervalID : 0, timerHasBeenActivated : false }
+	console.log("CREATING ROOM " + rooms[code].timer);
 	io.emit('room-created', code);
 	return res.redirect(code);
 })
 
+function waitingTimer(room) {
+	let roomTimer = rooms[room].timer;
+	io.emit('time-count', roomTimer)
+	rooms[room].timer = roomTimer - 1;
+	if (roomTimer <= 1) {
+		clearInterval(rooms[room].gameIntervalID);
+		io.emit('game-on');
+	}
+}
+
 app.get('/:room', (req, res) => {
-	if (rooms[req.params.room] == null) {
+	let roomCount = rooms[req.params.room].count;
+	if (rooms[req.params.room] == null || rooms[req.params.room].started ||roomCount >= capacity) {
 		return res.redirect('/')
 	}
 	res.render('room', { roomName: req.params.room })
 })
 
 server.listen(process.env.PORT || 5000)
+//server.listen(3000)
 
 io.on('connection', socket => {
 	socket.on('new-user', (room, name) => {
@@ -69,6 +82,15 @@ io.on('connection', socket => {
 	})
   socket.on('key-pressed', (room, words, num) => {
     socket.to(room).broadcast.emit('other-player-moved', {words: words, playerNumber: num})
+  })
+  socket.on('game-has-started', room => {
+  	rooms[room].started = true;
+  })
+  socket.on('activate-timer', room => {
+  	if (!rooms[room].timerHasBeenActivated) {
+  		rooms[room].gameIntervalID = setInterval(function() { waitingTimer(room); }, 1000);
+  		rooms[room].timerHasBeenActivated = true;
+  	}
   })
 })
 

@@ -11,6 +11,9 @@ var horses = 0;
 var place = 1;
 var horseHasBeenInitialized = false;
 var playerNumber = 0;
+var gameIsOn = false;
+var gameIntervalID = 0;
+//var waitingTime = 0;
 
 function addText() {
 	for (i = 0; i < text.length; i++) {
@@ -23,6 +26,12 @@ function addText() {
 }
 
 var keyboard_input = document.getElementById('keyboard-input');
+word = words.shift();
+if (keyboard_input) {
+	addText();
+	underlineWord(word, writtenWords);
+	socket.emit('new-user', roomName, name);
+}
 
 var intervalID = 0;
 
@@ -78,6 +87,15 @@ function makeHorseRun() {
 	}
 }
 
+function gameOn() {
+	socket.emit('game-has-started', roomName);
+	document.getElementById('waiting-area').style.display = "none";
+	keyboard_input.disabled = false;
+	gameIsOn = true;
+	keyboard_input.focus();
+	keyboard_input.select();
+}
+
 intervalID = setInterval(makeHorseRun, 1500);
 
 function gameOver() {
@@ -93,6 +111,16 @@ function underlineWord(w, widx) {
 		document.getElementById(`char-${widx + i}`).style.textDecoration = 'underline';
 	}
 }
+
+// function waitingTimer() {
+// 	if (waitingTime < 10) {
+// 		document.getElementById('waiting-area').innerHTML = "Empezando en " + (10-waitingTime) + " segundos..."
+// 		waitingTime++;
+// 	} else {
+// 		clearInterval(gameIntervalID);
+// 		gameOn();
+// 	}
+// }
 
 	var name = "Guest";
 
@@ -114,6 +142,19 @@ function underlineWord(w, widx) {
 			horseHasBeenInitialized = true;
 		}
 		createHorse(data.count);
+		if (!gameIsOn && data.count > 1) {
+			// wait 10 seconds for more players, then emit a message to close the session.
+			//gameIntervalID = setInterval(waitingTimer, 1000);
+			socket.emit('activate-timer', roomName);
+		}
+	})
+
+	socket.on('time-count', time => {
+		document.getElementById('waiting-area').innerHTML = "Empezando en " + (time) + " segundos..."
+	})
+
+	socket.on('game-on', () => {
+		gameOn();
 	})
 
 	socket.on('user-disconnected', name => {
@@ -123,16 +164,6 @@ function underlineWord(w, widx) {
 socket.on('other-player-moved', data => {
 	wordsDone[data.playerNumber] = data.words;
 })
-
-word = words.shift();
-// Function works ig;
-if (keyboard_input != null) {
-	keyboard_input.focus();
-	keyboard_input.select();
-	addText();
-	underlineWord(word, writtenWords);
-	socket.emit('new-user', roomName, name);
-}
 
 // Every time you get a new word, delete that word from the text
 function characterPosition() {
