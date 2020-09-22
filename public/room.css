@@ -1,0 +1,77 @@
+body {
+	display: flex;
+	height: 100vh;
+	justify-content: center;
+	align-items: center;
+	background-color: #EFF7F6;
+}
+
+.board {
+	margin-bottom: 10%;
+	width: 1000px;
+	background-color: #9F9F92;
+}
+
+#waiting-area {
+	font-family: Roboto, Sans-Serif;
+	font-weight: 100;
+	font-size: 25px;
+	position: fixed;
+	margin-left: 750px;
+	margin-top: 15px;
+	color: white;
+}
+
+.track-area {
+	width: 100%;
+}
+
+.track {
+	height: 75px;
+	width: 90%;
+	padding-left: 5%;
+}
+
+.car {
+	height: 90%; 
+	width: 30%;
+	background-repeat: no-repeat;
+}
+
+.line {
+	height: 10%;
+	width: 100%;
+	background-color: black;
+}
+
+.text-area {
+	width: 90%;
+	padding-left: 5%;
+	color: black;
+	font-family: Arial, Helvetica, Sans-Serif;
+	font-size: 20px;
+}
+
+.keyboard-area {
+	height: 70px;
+	width: 90%;
+	padding-left: 5%;
+}
+
+.keyboard-input {
+	height: 30px;
+	width: 100%;
+	background-color: white;
+	position: relative;
+	top: 50%;
+  	-ms-transform: translateY(-50%);
+  	transform: translateY(-50%);
+  	font-size: 20px;
+}
+
+#game-over {
+	color: red;
+	display: none;
+	background-color: transparent;
+	font-family: Arial, Helvetica, Sans-Serif;
+}

@@ -61,8 +61,6 @@ function waitingTimer(room) {
 }
 
 app.get('/:room', (req, res) => {
-	console.log("ROOM NUMBER:");
-	console.log(req.params.room);
 	let roomCount;
 	if (rooms[req.params.room]) {
 		roomCount = rooms[req.params.room].count;
@@ -73,8 +71,8 @@ app.get('/:room', (req, res) => {
 	res.render('room', { roomName: req.params.room })
 })
 
-//server.listen(process.env.PORT || 5000)
-server.listen(3000)
+server.listen(process.env.PORT || 3000)
+// server.listen(3000)
 
 io.on('connection', socket => {
 	socket.on('new-user', (room, name) => {

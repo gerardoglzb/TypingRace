@@ -156,7 +156,7 @@ function underlineWord(w, widx) {
 	})
 
 	socket.on('time-count', time => {
-		document.getElementById('waiting-area').innerHTML = "Empezando en " + (time) + " segundos...";
+		document.getElementById('waiting-area').innerHTML = "Empezando en " + (time) + "...";
 	})
 
 	socket.on('game-on', () => {

@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Type Racing</title>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="index.css">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Chat App</title>
 	<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 	<script defer src="script.js"></script>
 </head>
 <body>
-	<form action="/room" method="POST">
-		<button type="submit">Play!</button>
-	</form>
+	<div class="menu">
+		<div class="menu-title">Type Racing</div>
+		<div class="menu-subtitle">Quotes supplied by the What Does Trump Think? API</div>
+		<form action="/room" method="POST">
+			<button type="submit" class="play-btn">Play!</button>
+		</form>
+	</div>
 </body>
 </html>
