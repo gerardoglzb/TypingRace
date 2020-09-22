@@ -41,9 +41,9 @@ A simple online multiplayer game where, upon clicking play, you're automatically
 
 ### Built With
 This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [HTML5]
-* [CSS3]
-* [Javascript]
+* HTML5
+* CSS3
+* Javascript
 * [Node.js](https://nodejs.org/en/)
 * [npm](https://www.npmjs.com/)
 * [Socket.IO](https://socket.io/)
