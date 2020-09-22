@@ -3,6 +3,7 @@ body {
 	background-color: #EFF7F6;
 	/*background-repeat: no-repeat;*/
 	background-size: cover;
+	overflow: hidden;
 	display: flex;
 	justify-content: center;
 	height: 100vh;
@@ -43,4 +44,11 @@ body {
 .play-btn:hover {
 	background-color: rgb(0, 0, 0, .35);
 	cursor: pointer;
+}
+
+.github-link {
+	font-family: 'Roboto', sans-serif;
+	font-size: 15px;
+	bottom: 10px;
+	position: absolute;
 }
