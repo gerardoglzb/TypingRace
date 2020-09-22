@@ -1,6 +1,6 @@
-const socket = io();
-var text = "A A A A A A A A";
-var words = text.split(" ");
+const socket = io("http://localhost:3000");
+var text;
+var words;
 var keydownKey = " ";
 var characterPos = 0;
 var isCorrect = true;
@@ -13,6 +13,7 @@ var horseHasBeenInitialized = false;
 var playerNumber = 0;
 var gameIsOn = false;
 var gameIntervalID = 0;
+var step;
 //var waitingTime = 0;
 
 function addText() {
@@ -26,10 +27,7 @@ function addText() {
 }
 
 var keyboard_input = document.getElementById('keyboard-input');
-word = words.shift();
 if (keyboard_input) {
-	addText();
-	underlineWord(word, writtenWords);
 	socket.emit('new-user', roomName, name);
 }
 
@@ -73,7 +71,6 @@ function createHorse(n) {
 	}
 }
 
-var step = 70 / words.length;
 function makeHorseRun() {
 	let playerCounter = 1;
 	for (let key in wordsDone) {
@@ -136,6 +133,15 @@ function underlineWord(w, widx) {
 		// room deleted
 	})
 
+	socket.on('text-fetched', sentence => {
+		text = sentence;
+		words = text.split(" ");
+		word = words.shift();
+		step = 70 / words.length;
+		addText();
+		underlineWord(word, writtenWords);
+	});
+
 	socket.on('user-connected', data => {
 		if (!horseHasBeenInitialized) {
 			initializeHorse(data.count);
@@ -150,7 +156,7 @@ function underlineWord(w, widx) {
 	})
 
 	socket.on('time-count', time => {
-		document.getElementById('waiting-area').innerHTML = "Empezando en " + (time) + " segundos..."
+		document.getElementById('waiting-area').innerHTML = "Empezando en " + (time) + " segundos...";
 	})
 
 	socket.on('game-on', () => {
@@ -159,6 +165,10 @@ function underlineWord(w, widx) {
 
 	socket.on('user-disconnected', name => {
 		// user disconnected
+	})
+
+	socket.on('game-stopped', () => {
+		document.getElementById('waiting-area').innerHTML = "Esperando...";
 	})
 
 socket.on('other-player-moved', data => {
