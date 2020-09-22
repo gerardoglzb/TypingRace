@@ -80,7 +80,7 @@ function makeHorseRun() {
 		}
 		playerCounter++;
 	}
-	if (wordsDone[playerNumber] * step >= 70) {
+	if (wordsDone[playerNumber] * step >= 95) {
 		clearInterval(intervalID);
 	}
 }
