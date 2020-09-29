@@ -35,7 +35,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]](https://type-racing.herokuapp.com/)
 
 A simple online multiplayer game where, upon clicking play, you're automatically placed into a room with other players to compete against each other in a race to correctly type a randomly-selected sentence. Currently, they are all quotes by Donald Trump.
 
@@ -136,7 +136,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com -->
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/gerardoglzb/TypingRace)
+Project Link: [https://github.com/gerardoglzb/TypingRace](https://github.com/gerardoglzb/TypingRace)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
